@@ -26,7 +26,7 @@ void setup()
 	enc.attachButton(ENCODER_SW);
 
 	// Vernünftigen Ausgangszustand definieren
-	state = STATE::SCROLLTEXT;
+	state = STATE::TEST;
 	enc.setLimits(0, 20, 5);
 
 	// Display initialisieren

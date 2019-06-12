@@ -9,7 +9,7 @@ void Display::init(int encoderSwitchPin, Encoder enc, Clock clo)
 {
 	this->clo = clo;
 	this->enc = enc; 
-    parola.begin();  // Start Parola
+    parola.begin(3);  // Start Parola
 	parola.setIntensity(intensity);
 	maxPan.begin();
 	maxPan.setIntensity(intensity);
@@ -48,7 +48,13 @@ void Display::displayTexte(texteAusgabe ausgabe[])
 void Display::displayTextezone(texteAusgabezone ausgabe[])
 {
 	Latin1::utf8tolatin1(ausgabe[curText].text).toCharArray(textBuffer, sizeof(textBuffer));
-	parola.displayText(textBuffer, ausgabe[curText].align, ausgabe[curText].speed, ausgabe[curText].pause, ausgabe[curText].effectIn, ausgabe[curText].effectOut);
+	parola.setZone(0,0,1);
+	parola.setZone(1,2,4);	
+	parola.setZone(2,5,7);	
+	parola.displayZoneText(0,textBuffer, ausgabe[curText].align, ausgabe[curText].speed, ausgabe[curText].pause, ausgabe[curText].effectIn, ausgabe[curText].effectOut);
+	parola.displayZoneText(1,"13 :", ausgabe[curText].align, ausgabe[curText].speed, 2000, PA_PRINT, PA_NO_EFFECT);
+	parola.displayZoneText(2,"20 :", ausgabe[curText].align, ausgabe[curText].speed, 2000, PA_PRINT, PA_NO_EFFECT);
+//	parola.displayText(textBuffer, ausgabe[curText].align, ausgabe[curText].speed, ausgabe[curText].pause, ausgabe[curText].effectIn, ausgabe[curText].effectOut);
 	if (ausgabe[curText].effectIn == (textEffect_t) PA_SPRITE || ausgabe[curText].effectOut == (textEffect_t) PA_SPRITE)
 	{
 		parola.setSpriteData(sprite[spriteStart].data, sprite[spriteStart].width, sprite[spriteStart].frames, sprite[spriteEnde].data, sprite[spriteEnde].width, sprite[spriteEnde].frames);
@@ -108,9 +114,17 @@ void Display::setDisplayState()
 			parola.setFont(_sys_fixed_single);
 			texteAusgabezone zoneausgabe[] = 
 			{
+				{ "00",PA_LEFT, enc.getCount()*10,pause,PA_SCROLL_DOWN, PA_SCROLL_DOWN,1},
+				{ "01",PA_LEFT, enc.getCount()*10,pause,PA_SCROLL_DOWN, PA_SCROLL_DOWN,1},
+				{ "02",PA_LEFT, enc.getCount()*10,pause,PA_SCROLL_DOWN, PA_SCROLL_DOWN,1},
+				{ "03",PA_LEFT, enc.getCount()*10,pause,PA_SCROLL_DOWN, PA_SCROLL_DOWN,1},
+				{ "04",PA_LEFT, enc.getCount()*10,pause,PA_SCROLL_DOWN, PA_SCROLL_DOWN,1},
+				{ "05",PA_LEFT, enc.getCount()*10,pause,PA_SCROLL_DOWN, PA_SCROLL_DOWN,1},
+				{ "06",PA_LEFT, enc.getCount()*10,pause,PA_SCROLL_DOWN, PA_SCROLL_DOWN,1},
+				{ "07",PA_LEFT, enc.getCount()*10,pause,PA_SCROLL_DOWN, PA_SCROLL_DOWN,1},
+				{ "08",PA_LEFT, enc.getCount()*10,pause,PA_SCROLL_DOWN, PA_SCROLL_DOWN,1},
 				{ "09",PA_LEFT, enc.getCount()*10,pause,PA_SCROLL_DOWN, PA_SCROLL_DOWN,1},
 				{ "10",PA_LEFT, enc.getCount()*10,pause,PA_SCROLL_DOWN, PA_SCROLL_DOWN,1},
-				{ "11",PA_LEFT, enc.getCount()*10,pause,PA_SCROLL_DOWN, PA_SCROLL_DOWN,1},
 			};
 			textCount = sizeof(zoneausgabe) / sizeof(zoneausgabe[0]);
 			displayTextezone(zoneausgabe);
@@ -248,7 +262,12 @@ void Display::render()
 		}
 		if (state == STATE::TEST)
 		{
-			
+			if (textCount != 0) 
+			{
+				curText = (curText+ 1) % textCount;
+			}
+			setDisplayState();
+			//parola.displayReset();  // Reset and display it again			
 		}
 	}
 
