@@ -10,6 +10,7 @@ const char* menuitemStrings[_MENUITEMS_LENGTH] = {
 	"Uhr",
 	"Uhr und Datum",
 	"Game of Life",
+	"Test",
 	"Automatik"
 };
 
@@ -36,6 +37,10 @@ void menuItemPressed(Encoder& enc)
 			break;
 		case MENUITEMS::GAMELIFE:
 			state = GAMEOFLIFE;
+			enc.setLimits(0, 20, 5);
+			break;
+		case MENUITEMS::TESTZONE:
+			state = TEST;
 			enc.setLimits(0, 20, 5);
 			break;
 		case MENUITEMS::AUTOSTATE:

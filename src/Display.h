@@ -44,6 +44,18 @@ private:
         textEffect_t effectOut;        
     }texteAusgabe; 
 
+    typedef struct 
+    {
+        String text;
+        textPosition_t align;
+        int speed;
+        int pause;
+        textEffect_t effectIn;
+        textEffect_t effectOut;        
+        int zone;
+    }texteAusgabezone; 
+
+
 protected:
 public:
     static Display& instance()
@@ -58,6 +70,7 @@ public:
     void displayText(String text, textPosition_t align, uint16_t speed, uint16_t pause, textEffect_t effectIn, textEffect_t effectOut);
     void displayTexte(String text[], textPosition_t align, uint16_t speed, uint16_t pause, textEffect_t effectIn, textEffect_t effectOut);
     void displayTexte(texteAusgabe ausgabe[]);
+    void displayTextezone(texteAusgabezone ausgabe[]);
     void setDisplayState();
     void render();
     void animateUntilButtonPress(bool repeat = false);
@@ -66,6 +79,7 @@ public:
     String scrollText = ""; 
 	String clockText[] ; 
     texteAusgabe clockausgabe;
+    texteAusgabezone zoneausgabe;
     bool autostate;
     uint8_t animationStart = 4; 
     uint8_t animationEnde = 4; 

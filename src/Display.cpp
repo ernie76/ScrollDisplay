@@ -45,6 +45,16 @@ void Display::displayTexte(texteAusgabe ausgabe[])
 	}
 }
 
+void Display::displayTextezone(texteAusgabezone ausgabe[])
+{
+	Latin1::utf8tolatin1(ausgabe[curText].text).toCharArray(textBuffer, sizeof(textBuffer));
+	parola.displayText(textBuffer, ausgabe[curText].align, ausgabe[curText].speed, ausgabe[curText].pause, ausgabe[curText].effectIn, ausgabe[curText].effectOut);
+	if (ausgabe[curText].effectIn == (textEffect_t) PA_SPRITE || ausgabe[curText].effectOut == (textEffect_t) PA_SPRITE)
+	{
+		parola.setSpriteData(sprite[spriteStart].data, sprite[spriteStart].width, sprite[spriteStart].frames, sprite[spriteEnde].data, sprite[spriteEnde].width, sprite[spriteEnde].frames);
+	}
+}
+
 void Display::setDisplayState()
 {
 	if (oldstate != state) {oldstate = state;curText=0;}
@@ -93,6 +103,19 @@ void Display::setDisplayState()
 		case GAMEOFLIFE:
 			maxPan.clear();
 			break;
+		case TEST:
+		{
+			parola.setFont(_sys_fixed_single);
+			texteAusgabezone zoneausgabe[] = 
+			{
+				{ "09",PA_LEFT, enc.getCount()*10,pause,PA_SCROLL_DOWN, PA_SCROLL_DOWN,1},
+				{ "10",PA_LEFT, enc.getCount()*10,pause,PA_SCROLL_DOWN, PA_SCROLL_DOWN,1},
+				{ "11",PA_LEFT, enc.getCount()*10,pause,PA_SCROLL_DOWN, PA_SCROLL_DOWN,1},
+			};
+			textCount = sizeof(zoneausgabe) / sizeof(zoneausgabe[0]);
+			displayTextezone(zoneausgabe);
+			break;
+		}
 		case MENU: 
 			displayText(menuitemStrings[menuitem] , PA_LEFT, 0, 0, PA_PRINT,PA_NO_EFFECT);
 			break; 
@@ -222,6 +245,10 @@ void Display::render()
 				gol.nextGeneration();
 			}
 			//parola.displayReset();  // Reset and display it again
+		}
+		if (state == STATE::TEST)
+		{
+			
 		}
 	}
 
