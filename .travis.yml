@@ -19,7 +19,7 @@ deploy:
   overwrite: true
   draft: true
   on:
-    branch: travistest
+    all_branches: true
 
 #  provider: releases
 #  api_key: $GITHUB_TOKEN
