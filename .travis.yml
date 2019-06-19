@@ -18,6 +18,8 @@ deploy:
   skip_cleanup: true
   overwrite: true
   draft: true
+  on:
+    branch: travistest
 
 #  provider: releases
 #  api_key: $GITHUB_TOKEN
